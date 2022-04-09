@@ -5,12 +5,10 @@ import { Button, message, Form, Input, List } from "antd";
 import { sleep } from "@/utils";
 
 function Todo(props: any) {
-  console.log("props:", props);
   return <List.Item actions={[<Button>操作</Button>]}>{JSON.stringify(props.data)}</List.Item>;
 }
 
 function TodoList(props: any) {
-  console.log("props:", props);
   return (
     <List bordered>
       {props.list.map((todo: any, index: any) => (

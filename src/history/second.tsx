@@ -1,9 +1,12 @@
+// ! react只负责UI的渲染，不负责状态的管理和业务逻辑
+// 所有的状态管理在store中，具体是reducer
+// 所有的业务所及放在actionCreator中，派发不同的action
+
 import React, { useState } from "react";
 import { Button, message, Form, Input, List } from "antd";
 
-import { createStore, bindActionCreators, applyMiddleware } from "redux";
+import { createStore, bindActionCreators } from "redux";
 import { Provider, connect } from "react-redux";
-import createSagaMiddleware from "redux-saga";
 // @ts-ignore
 import { sleep } from "@/utils";
 
@@ -23,7 +26,7 @@ const reducer = (state = initialState, action: any) => {
   }
 };
 
-const addTodo = async (payload: any) => {
+const addTodo = (payload: any) => {
   // !把复杂的业务逻辑放在action creator里面,
   // await sleep(1000);
   return {
