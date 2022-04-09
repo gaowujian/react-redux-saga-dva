@@ -1,6 +1,8 @@
+// ! 只使用react进行状态的管理和组件的渲染
 import React, { useState } from "react";
 import { Button, message, Form, Input, List } from "antd";
-import { sleep } from "./utils";
+// @ts-ignore
+import { sleep } from "@/utils";
 
 function Todo(props: any) {
   console.log("props:", props);
