@@ -4,6 +4,7 @@ import { Button, message, Form, Input, List } from "antd";
 import { createStore, bindActionCreators, applyMiddleware } from "redux";
 import { Provider, connect } from "react-redux";
 import createSagaMiddleware from "redux-saga";
+import { put, takeEvery, delay, all } from "redux-saga/effects";
 // @ts-ignore
 import { sleep } from "@/utils";
 
@@ -23,16 +24,32 @@ const reducer = (state = initialState, action: any) => {
   }
 };
 
-const addTodo = async (payload: any) => {
-  // !把复杂的业务逻辑放在action creator里面,
-  // await sleep(1000);
+const addTodo = (payload: any) => {
   return {
-    type: "add",
+    type: "add_async",
     payload,
   };
 };
 
-const store = createStore(reducer);
+// !真实工作的saga，负责业务逻辑
+export function* addTodoWorkerSaga(action: any) {
+  console.log("action:", action);
+  yield delay(1000);
+  yield put({ type: "add", payload: action.payload });
+}
+
+// ! 监听saga，负责接受一系列的动作
+export function* watcherSaga() {
+  yield takeEvery("add_async", addTodoWorkerSaga);
+}
+
+// ! rootSaga 注册开始的所有saga
+function* rootSaga() {
+  yield all([watcherSaga()]);
+}
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(reducer, applyMiddleware(sagaMiddleware));
+sagaMiddleware.run(rootSaga);
 function Todo(props: any) {
   return <List.Item actions={[<Button>操作</Button>]}>{JSON.stringify(props.data)}</List.Item>;
 }
@@ -49,6 +66,7 @@ function TodoList(props: any) {
 const ConnectedTodoList = connect((state) => state)(TodoList);
 
 function AddTodoBtn(props: any) {
+  console.log("props:", props);
   return (
     <>
       <Form
@@ -72,12 +90,6 @@ const ConnectedAddToDo = connect(
   (state) => state,
   (dispatch) => {
     return bindActionCreators({ addTodo }, dispatch);
-
-    // return {
-    //   addTodo(item: any) {
-    //     dispatch(addTodo(item));
-    //   },
-    // };
   }
 )(AddTodoBtn);
 
