@@ -28,7 +28,7 @@ const reducer = (state = initialState, action: any) => {
 
 const addTodo = (payload: any) => {
   // !把复杂的业务逻辑放在action creator里面,
-  // await sleep(1000);
+  // await sleep(500);
   return {
     type: "add",
     payload,

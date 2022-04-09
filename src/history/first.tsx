@@ -47,7 +47,7 @@ function App() {
   const [list, setList] = useState<IListItem[]>([]);
   console.log("list:", list);
   const addTodo = (item: IListItem) => {
-    sleep(1000).then(() => {
+    sleep(500).then(() => {
       setList([...list, item]);
       message.success("添加成功");
     });

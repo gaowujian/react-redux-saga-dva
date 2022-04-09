@@ -28,7 +28,7 @@ const reducer = (state = initialState, action: any) => {
 // !真实工作的saga，负责业务逻辑
 export function* addTodoWorkerSaga(action: any) {
   console.log("action:", action);
-  yield delay(1000);
+  yield delay(500);
   yield put({ type: "add", payload: action.payload });
 }
 

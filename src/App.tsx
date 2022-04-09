@@ -1,12 +1,11 @@
+// ! 使用了redux-sga来解决redux中的异步请求问题，同时使用了react-redux的hooks简化组件和store的链接
 import React from "react";
-import { Button, message, Form, Input, List } from "antd";
+import { Button, Form, Input, List } from "antd";
 
 import { createStore, applyMiddleware } from "redux";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import createSagaMiddleware from "redux-saga";
 import { put, takeEvery, delay, all } from "redux-saga/effects";
-// @ts-ignore
-import { sleep } from "@/utils";
 
 const initialState: {
   list: IListItem[];
@@ -27,7 +26,7 @@ const reducer = (state = initialState, action: any) => {
 // !真实工作的saga，负责业务逻辑
 export function* addTodoWorkerSaga(action: any) {
   console.log("action:", action);
-  yield delay(1000);
+  yield delay(500);
   yield put({ type: "add", payload: action.payload });
 }
 
